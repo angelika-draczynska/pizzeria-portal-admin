@@ -1,0 +1,13 @@
+@import '../../../styles/settings.scss';
+
+.component {
+  padding: $base-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.avatar, .submit {
+  background-color: #26a59a;
+}
