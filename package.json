@@ -2,7 +2,10 @@
   "name": "pizzeria-portal-admin",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/panel/",
   "dependencies": {
+    "@material-ui/core": "^4.7.0",
+    "@material-ui/icons": "^4.5.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "json-server": "^0.15.1",
@@ -20,6 +23,7 @@
     "start": "run-p start:* ",
     "start-silent": "run-p start > /dev/null",
     "start:react": "react-scripts start",
+    "start:api": "yarn build && node server.js",
     "start-and-test": "run-p start-silent test ",
     "build": "react-scripts build",
     "test": "react-scripts test --noStackTrace",
