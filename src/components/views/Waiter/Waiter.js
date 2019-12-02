@@ -108,7 +108,7 @@ class Waiter extends React.Component {
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row.status, row.id, row.order)}
+                    {this.renderActions(row.status)}
                   </TableCell>
                 </TableRow>
               ))}
