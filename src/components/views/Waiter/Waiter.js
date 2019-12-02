@@ -16,64 +16,63 @@ class Waiter extends React.Component {
     updateTablesStatus: PropTypes.any,
     loading: PropTypes.shape({
       active: PropTypes.bool,
-      error: PropTypes.oneOf(PropTypes.bool,PropTypes.string),
+      error: PropTypes.oneOf(PropTypes.bool, PropTypes.string),
     }),
-  }
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     const { fetchTables } = this.props;
     fetchTables();
   }
 
-  componentDidMountTables(){
-    const { updateTablesStatus } = this.props;
-    updateTablesStatus();
+  // componentDidMountTables() {
+  //   const { fetchTablesStatus } = this.props;
+  //   fetchTablesStatus();
+  // }
+
+  handleClick(e, status) {
+    e.preventDefault();
+    this.props.updateTableStatus(status);
+    this.props.fetchStatus();
   }
 
-  renderActions(status){
+  renderActions(status) {
     switch (status) {
       case 'free':
         return (
           <>
-            <Button>thinking</Button>
+            <Button onClick={e => this.handleClick(e, status)}>thinking</Button>
             <Button>new order</Button>
           </>
         );
       case 'thinking':
-        return (
-          <Button>new order</Button>
-        );
+        return <Button>new order</Button>;
       case 'ordered':
-        return (
-          <Button>prepared</Button>
-        );
+        return <Button>prepared</Button>;
       case 'prepared':
-        return (
-          <Button>delivered</Button>
-        );
+        return <Button>delivered</Button>;
       case 'delivered':
-        return (
-          <Button>paid</Button>
-        );
+        return <Button>paid</Button>;
       case 'paid':
-        return (
-          <Button>free</Button>
-        );
+        return <Button>free</Button>;
       default:
         return null;
     }
   }
 
   render() {
-    const { loading: { active, error }, tables } = this.props;
+    const {
+      loading: { active, error },
+      tables,
+    } = this.props;
 
-    if(active || !tables.length){
+    if (active || !tables.length) {
       return (
         <Paper className={styles.component}>
           <p>Loading...</p>
         </Paper>
       );
-    } else if(error) {
+    } else if (error) {
       return (
         <Paper className={styles.component}>
           <p>Error! Details:</p>
@@ -98,18 +97,18 @@ class Waiter extends React.Component {
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell>
-                    {row.status}
-                  </TableCell>
+                  <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {row.order && (
-                      <Button to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}>
+                      <Button
+                        to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}
+                      >
                         {row.order}
                       </Button>
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row.status)}
+                    {this.renderActions(row.status, row.id, row.order)}
                   </TableCell>
                 </TableRow>
               ))}
