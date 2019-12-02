@@ -1,0 +1,26 @@
+@import '../../../styles/settings.scss';
+
+.component {
+  padding: $base-size;
+}
+
+.paper {
+  padding: 20px;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+}
+
+.showMore {
+  margin-left: auto;
+}
+
+.table {
+  margin-top: 15px;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
