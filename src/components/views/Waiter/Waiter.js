@@ -25,7 +25,7 @@ class Waiter extends React.Component {
     fetchTables();
   }
 
-  handleClick(e, tableId, status) {
+  handleClick(e, tableId, status, order) {
     e.preventDefault();
 
     if (status === 'free') {
@@ -42,39 +42,39 @@ class Waiter extends React.Component {
       status = 'free';
     }
 
-    this.props.updateTableStatus(tableId, status);
+    this.props.updateTableStatus(tableId, status, order);
   }
 
-  renderActions(status, id){
+  renderActions(status, id, order){
     switch (status) {
       case 'free':
         return (
           <>
-            <Button onClick={(e) => this.handleClick(e, id, status)}>thinking</Button>
-            <Button onClick={(e) => this.handleClick(e, id, status)}>new order</Button>
+            <Button onClick={(e) => this.handleClick(e, id, status, order)}>thinking</Button>
+            <Button onClick={(e) => this.handleClick(e, id, status, order)}>new order</Button>
             
           </>
         );
 
       case 'thinking':
         return (
-          <Button onClick={(e) => this.handleClick(e, id, status)}>new order</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>new order</Button>
         );
       case 'ordered':
         return (
-          <Button onClick={(e) => this.handleClick(e, id, status)}>prepared</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>prepared</Button>
         );
       case 'prepared':
         return (
-          <Button onClick={(e) => this.handleClick(e, id, status)}>delivered</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>delivered</Button>
         );
       case 'delivered':
         return (
-          <Button onClick={(e) => this.handleClick(e, id, status)}>paid</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>paid</Button>
         );
       case 'paid':
         return (
-          <Button onClick={(e) => this.handleClick(e, id, status)}>free</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>free</Button>
         );
       default:
         return null;
@@ -129,7 +129,7 @@ class Waiter extends React.Component {
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row.status, row.id)}
+                    {this.renderActions(row.status, row.id, row.order)}
                   </TableCell>
                 </TableRow>
               ))}
