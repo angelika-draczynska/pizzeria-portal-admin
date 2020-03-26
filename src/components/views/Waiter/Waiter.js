@@ -13,51 +13,68 @@ class Waiter extends React.Component {
   static propTypes = {
     fetchTables: PropTypes.func,
     tables: PropTypes.any,
-    updateTablesStatus: PropTypes.any,
+    updateTableStatus: PropTypes.func,
     loading: PropTypes.shape({
       active: PropTypes.bool,
-      error: PropTypes.oneOf(PropTypes.bool,PropTypes.string),
+      error: PropTypes.oneOf(PropTypes.bool, PropTypes.string),
     }),
-  }
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     const { fetchTables } = this.props;
     fetchTables();
   }
 
-  componentDidMountTables(){
-    const { updateTablesStatus } = this.props;
-    updateTablesStatus();
+  handleClick(e, tableId, status, order) {
+    e.preventDefault();
+
+    if (status === 'free') {
+      status = 'thinking';
+    } else if (status === 'thinking') {
+      status = 'ordered';
+    } else if (status === 'ordered') {
+      status = 'prepared';
+    } else if (status === 'prepared') {
+      status = 'delivered';
+    } else if (status === 'delivered') {
+      status = 'paid';
+    } else if (status === 'paid') {
+      status = 'free';
+    }
+
+    this.props.updateTableStatus(tableId, status, order);
   }
 
-  renderActions(status){
+  renderActions(status, id, order){
     switch (status) {
       case 'free':
         return (
           <>
-            <Button>thinking</Button>
-            <Button>new order</Button>
+            <Button onClick={(e) => this.handleClick(e, id, status, order)}>thinking</Button>
+            <Button onClick={(e) => this.handleClick(e, id, status, order)}>new order</Button>
+            
           </>
         );
+
       case 'thinking':
         return (
-          <Button>new order</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>new order</Button>
         );
       case 'ordered':
         return (
-          <Button>prepared</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>prepared</Button>
         );
       case 'prepared':
         return (
-          <Button>delivered</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>delivered</Button>
         );
       case 'delivered':
         return (
-          <Button>paid</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>paid</Button>
         );
       case 'paid':
         return (
-          <Button>free</Button>
+          <Button onClick={(e) => this.handleClick(e, id, status, order)}>free</Button>
         );
       default:
         return null;
@@ -65,15 +82,18 @@ class Waiter extends React.Component {
   }
 
   render() {
-    const { loading: { active, error }, tables } = this.props;
+    const {
+      loading: { active, error },
+      tables,
+    } = this.props;
 
-    if(active || !tables.length){
+    if (active || !tables.length) {
       return (
         <Paper className={styles.component}>
           <p>Loading...</p>
         </Paper>
       );
-    } else if(error) {
+    } else if (error) {
       return (
         <Paper className={styles.component}>
           <p>Error! Details:</p>
@@ -98,18 +118,18 @@ class Waiter extends React.Component {
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell>
-                    {row.status}
-                  </TableCell>
+                  <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {row.order && (
-                      <Button to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}>
+                      <Button
+                        to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`}
+                      >
                         {row.order}
                       </Button>
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row.status)}
+                    {this.renderActions(row.status, row.id, row.order)}
                   </TableCell>
                 </TableRow>
               ))}
